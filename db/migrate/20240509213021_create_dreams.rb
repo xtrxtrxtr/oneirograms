@@ -16,10 +16,6 @@ class CreateDreams < ActiveRecord::Migration[7.1]
       t.text :body, null: false
     end
 
-    reversible do |dir|
-      dir.up do
-        execute "create index dreams_created_month_idx on dreams using btree (date_trunc('month', created_at));"
-      end
-    end
+    add_index :dreams, "date_trunc('month', created_at)", name: 'dreams_created_month_idx'
   end
 end

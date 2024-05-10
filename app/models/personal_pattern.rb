@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Sleep place where dreams are seen
+# Personal dream pattern
 #
 # Attributes:
 #   created_at [DateTime]
@@ -8,10 +8,8 @@
 #   updated_at [DateTime]
 #   user_uuid [UUID], required
 #   uuid [UUID], required
-class SleepPlace < ApplicationRecord
+class PersonalPattern < ApplicationRecord
   include HasUuid
-
-  has_many :dreams, dependent: :nullify
 
   validates :user_uuid, presence: true
   validates :name,
