@@ -10,14 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_08_220747) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_09_213021) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "dreams", comment: "Dreams", force: :cascade do |t|
+    t.uuid "uuid", null: false
+    t.uuid "user_uuid", comment: "Owner"
+    t.bigint "sleep_place_id"
+    t.integer "lucidity", limit: 2, default: 0, null: false
+    t.integer "privacy", limit: 2, default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.inet "ip"
+    t.string "title"
+    t.text "body", null: false
+    t.index "date_trunc('month'::text, created_at)", name: "dreams_created_month_idx"
+    t.index ["sleep_place_id"], name: "index_dreams_on_sleep_place_id"
+    t.index ["user_uuid"], name: "index_dreams_on_user_uuid"
+    t.index ["uuid"], name: "index_dreams_on_uuid", unique: true
+  end
 
   create_table "sleep_places", comment: "Places where dreams are seen", force: :cascade do |t|
     t.uuid "uuid", null: false
     t.uuid "user_uuid", null: false, comment: "Owner (UUID)"
-    t.integer "dreams_count", default: 0, null: false, comment: "Dream count for this place"
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -25,4 +42,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_08_220747) do
     t.index ["uuid"], name: "index_sleep_places_on_uuid", unique: true
   end
 
+  add_foreign_key "dreams", "sleep_places", on_update: :cascade, on_delete: :nullify
 end
