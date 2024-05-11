@@ -10,6 +10,7 @@ RSpec.describe Dream do
   it_behaves_like 'has_uuid'
 
   it { is_expected.to belong_to(:sleep_place).optional }
+  it { is_expected.to have_many(:dream_interpretations) }
   it { is_expected.to define_enum_for(:privacy).with_values(%i[generally_accessible for_community personal]) }
 
   describe 'validation' do

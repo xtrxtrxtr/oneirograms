@@ -18,6 +18,7 @@ class Dream < ApplicationRecord
   include HasUuid
 
   belongs_to :sleep_place, optional: true
+  has_many :dream_interpretations, dependent: :delete_all
 
   enum privacy: { generally_accessible: 0, for_community: 1, personal: 2 }
 

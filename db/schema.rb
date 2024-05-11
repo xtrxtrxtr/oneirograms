@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_10_225601) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_11_064951) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "dream_interpretations", comment: "Dream interpretations", force: :cascade do |t|
+    t.uuid "uuid", null: false
+    t.bigint "dream_id", null: false
+    t.uuid "user_uuid"
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dream_id"], name: "index_dream_interpretations_on_dream_id"
+    t.index ["user_uuid"], name: "index_dream_interpretations_on_user_uuid"
+    t.index ["uuid"], name: "index_dream_interpretations_on_uuid", unique: true
+  end
 
   create_table "dreams", comment: "Dreams", force: :cascade do |t|
     t.uuid "uuid", null: false
@@ -52,5 +64,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_10_225601) do
     t.index ["uuid"], name: "index_sleep_places_on_uuid", unique: true
   end
 
+  add_foreign_key "dream_interpretations", "dreams", on_update: :cascade, on_delete: :cascade
   add_foreign_key "dreams", "sleep_places", on_update: :cascade, on_delete: :nullify
 end
