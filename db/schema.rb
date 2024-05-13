@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_11_064951) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_11_223009) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,6 +24,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_11_064951) do
     t.index ["dream_id"], name: "index_dream_interpretations_on_dream_id"
     t.index ["user_uuid"], name: "index_dream_interpretations_on_user_uuid"
     t.index ["uuid"], name: "index_dream_interpretations_on_uuid", unique: true
+  end
+
+  create_table "dream_personal_patterns", comment: "Links between dreams and personal patterns", force: :cascade do |t|
+    t.bigint "dream_id", null: false
+    t.bigint "personal_pattern_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dream_id"], name: "index_dream_personal_patterns_on_dream_id"
+    t.index ["personal_pattern_id"], name: "index_dream_personal_patterns_on_personal_pattern_id"
   end
 
   create_table "dreams", comment: "Dreams", force: :cascade do |t|
@@ -65,5 +74,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_11_064951) do
   end
 
   add_foreign_key "dream_interpretations", "dreams", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "dream_personal_patterns", "dreams", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "dream_personal_patterns", "personal_patterns", on_update: :cascade, on_delete: :cascade
   add_foreign_key "dreams", "sleep_places", on_update: :cascade, on_delete: :nullify
 end

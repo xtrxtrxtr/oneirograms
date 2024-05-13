@@ -11,6 +11,9 @@
 class PersonalPattern < ApplicationRecord
   include HasUuid
 
+  has_many :dream_personal_patterns, dependent: :delete_all
+  has_many :dreams, through: :dream_personal_patterns
+
   validates :user_uuid, presence: true
   validates :name,
             presence: true,
